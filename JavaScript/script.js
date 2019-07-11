@@ -126,8 +126,18 @@ function validateEmail() {
 };
 
 function validateActivities() {
-
-}
+  const totalRegex =  /\$[0-9]{3,}/
+  let totalString = $('#total').text();
+  $('#total + .err-msg').remove();
+  if(!totalRegex.test(totalString)) {
+    $('#total').after('<span class="err-msg" style="color:red">Please select activities!</span>');
+    return false;
+  } else {
+    $('#total + .err-msg').remove();
+    return true;
+  }
+    
+};
 
 function validateCreditCard() {
  //   // Validate credit card number
