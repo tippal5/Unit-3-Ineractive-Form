@@ -14,9 +14,9 @@ $('#title').change(function () {
   }
 });
 
-$('#design option:first').hide();
-$('#color option').hide();
-$("#colors-js-puns").hide();
+$('#design option:first').hide(); // hides the select theme part of the t-shirt section.  
+$('#color option').hide();  // hides the color option for the untill a them is selected.
+$("#colors-js-puns").hide(); // hides js-puns untill the ability to select it becomes avalible.
 
 $('#design').change(function () {
   if ($('#design option:selected').val() === "js puns") {
@@ -50,43 +50,34 @@ $('.activities input').on("click", function (e) {
     total += $(this).parent().text().match(/[0-9]+$/)[0] * 1;
   });
   $('#total').text('$' + total);
-
-
 });
-
+// Payment section, hides the option for select paymet option from the drop down menu.
 $('#payment option:first').hide();
 $('p:contains("PayPal")').hide();
 $('p:contains("Bitcoin")').hide();
 
 $('#payment').change(function () {
-
+   
   if ($('#payment').val() === "credit card") {
-    $('#credit-card').show().nextAll();
-    $('p:contains("PayPal")').hide();
-    $('p:contains("Bitcoin")').hide();
+    $('#credit-card').show().nextAll(); // shows the credit card part and everything that is inside the Div of it. 
+    $('p:contains("PayPal")').hide(); // hides paypal option since the cc is selected. 
+    $('p:contains("Bitcoin")').hide(); // hides the bitcoin option since the cc is selected. 
   }
 
   if ($('#payment').val() === "bitcoin") {
-    $('#credit-card').hide().nextAll();
-    $('p:contains("PayPal")').hide();
-    $('p:contains("Bitcoin")').show();
+    $('#credit-card').hide().nextAll();  // hides the cc section and all the elements inside the Div.
+    $('p:contains("PayPal")').hide(); //  hides the paypal option since the bitcoin is selected.
+    $('p:contains("Bitcoin")').show(); //  shows bitcoin and the paragraph that. 
   }
 
-  if ($('#payment').val() === "paypal") {
-    $('#credit-card').hide().nextAll();
-    $('p:contains("PayPal")').show();
-    $('p:contains("Bitcoin")').hide();
+  if ($('#payment').val() === "paypal") { 
+    $('#credit-card').hide().nextAll(); // hides the cc section and all the elements inside the Div 
+    $('p:contains("PayPal")').show(); // hides the paypal option and the paragraph that goes along with it. 
+    $('p:contains("Bitcoin")').hide(); // hide bitcoin and the paragraph that goes along with it. 
   }
 });
-// validation part
-
-// if name contains empty string alert message to fill out the for and prevent the registration
-// if email contains empty string alert message to fill out the for and prevent the registration
-// if job role not selected  alert message to fill out the for and prevent the registration
-// if total equals 0 alert message to fill out the for and prevent the registration
-// if payment is not completed aler message.
-
-function validateForm() {
+// Form Validation, which looks at if the form is valid to uses a boolean value for each section.
+function validateForm() { 
   let formIsValid = validateName();
   formIsValid = validateEmail() && formIsValid;
   formIsValid = validateActivities() && formIsValid;
@@ -95,9 +86,9 @@ function validateForm() {
   formIsValid = validateCVV() && formIsValid;
   return formIsValid;
 }
-
+// To Validate Name Section
 function validateName() {
-  var x = $("#name").val(); // validate name.
+  var x = $("#name").val(); 
   $('#name + .err-msg').remove();
   if (x === "") {
     $('#name').after('<span class="err-msg" style="color:red">Enter a valid Name</span>');
@@ -106,11 +97,9 @@ function validateName() {
     $('#name + .err-msg').remove();
     return true;
   }
-
-}
-
+};
+// To Validate E-mail Section
 function validateEmail() {
-
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   let emailString = $('#mail').val();
   $('#mail + .err-msg').remove();
@@ -121,12 +110,8 @@ function validateEmail() {
     $('#mail + .err-msg').remove();
     return true;
   }
-
-
-  console.log('Email must be filled out');
-
 };
-
+  // Validate Activities Section 
 function validateActivities() {
   const totalRegex = /\$[0-9]{3,}/
   let totalString = $('#total').text();
@@ -140,10 +125,9 @@ function validateActivities() {
   }
 
 };
-
-function validateCreditCard() {
-  //   Validate credit card number
-  const ccRegex = /\b\d{4}(| |-)\d{4}\1\d{4}\1\d{4}\b/
+//   Validate credit card number
+function validateCreditCard() {  
+  const ccRegex =   /\b\d{4}(| |-)\d{4}\1\d{4}\1\d{4}\b/
   let ccString = $('#cc-num').val();
   $('#cc-num + .err-msg').remove();
   if (!ccRegex.test(ccString)) {
@@ -154,8 +138,6 @@ function validateCreditCard() {
     return true;
   }
 };
-
-
 // Validate Zip Code
 function validateZip() {
   const zipRegex = /^\d{5}(?:[-\s]\d{4})?$/
@@ -169,7 +151,7 @@ function validateZip() {
     return true;
   };
 };
-//   //Validate CVV
+//Validate CVV
 function validateCVV() {
   const cvvRegex = /^[0-9]{3}$/
   let cvvString = $('#cvv').val();
@@ -183,8 +165,7 @@ function validateCVV() {
     return true;
   }
 };
-
-
+//Code to submit the form and reloads it once all validators come back as true.
 $('form').submit(function (e) {
   
   e.preventDefault();
@@ -196,4 +177,3 @@ $('form').submit(function (e) {
     location.reload(true);
   }
 });
-
