@@ -1,8 +1,8 @@
 // this is the code for to focus on name box when the page is opened
 $(document).ready(function () {
   $('#name').focus();
-
 });
+
 
 $('#other-title').hide();
 
@@ -87,10 +87,12 @@ $('#payment').change(function () {
 // if payment is not completed aler message.
 
 function validateForm() {
-  let formIsValid = validateName();   
+  let formIsValid = validateName();
   formIsValid = validateEmail() && formIsValid;
   formIsValid = validateActivities() && formIsValid;
   formIsValid = validateCreditCard() && formIsValid;
+  formIsValid = validateZip() && formIsValid;
+  formIsValid = validateCVV() && formIsValid;
   return formIsValid;
 }
 
@@ -98,7 +100,7 @@ function validateName() {
   var x = $("#name").val(); // validate name.
   $('#name + .err-msg').remove();
   if (x === "") {
-    $('#name').after('<span class="err-msg" style="color:red">Enter a valid name</span>');
+    $('#name').after('<span class="err-msg" style="color:red">Enter a valid Name</span>');
     return false;
   } else {
     $('#name + .err-msg').remove();
@@ -113,7 +115,7 @@ function validateEmail() {
   let emailString = $('#mail').val();
   $('#mail + .err-msg').remove();
   if (!emailRegex.test(emailString)) {
-    $('#mail').after('<span class = "err-msg" style="color:red">Enter a valid email</span>');
+    $('#mail').after('<span class = "err-msg" style="color:red">Enter a valid E-mail</span>');
     return false;
   } else {
     $('#mail + .err-msg').remove();
@@ -126,49 +128,72 @@ function validateEmail() {
 };
 
 function validateActivities() {
-  const totalRegex =  /\$[0-9]{3,}/
+  const totalRegex = /\$[0-9]{3,}/
   let totalString = $('#total').text();
   $('#total + .err-msg').remove();
-  if(!totalRegex.test(totalString)) {
-    $('#total').after('<span class="err-msg" style="color:red">Please select activities!</span>');
+  if (!totalRegex.test(totalString)) {
+    $('#total').after('<span class="err-msg" style="color:red">Please select Activities!</span>');
     return false;
   } else {
     $('#total + .err-msg').remove();
     return true;
   }
-    
+
 };
 
 function validateCreditCard() {
- //   // Validate credit card number
-  //   const ccRegex =  /\b\d{4}(| |-)\d{4}\1\d{4}\1\d{4}\b/
-  //   let ccString = $('#cc-num').val();
-  //   if (ccRegex.test(ccString));{
-  //   ($('#cc-num').val() ==  /\b\d{4}(| |-)\d{4}\1\d{4}\1\d{4}\b/g) {
+  //   Validate credit card number
+  const ccRegex = /\b\d{4}(| |-)\d{4}\1\d{4}\1\d{4}\b/
+  let ccString = $('#cc-num').val();
+  $('#cc-num + .err-msg').remove();
+  if (!ccRegex.test(ccString)) {
+    $('#cc-num').after('<span class="err-msg" style="color:red">Please enter a valid Credit Card!</span>');
+    return false;
+  } else {
+    $('#cc-num + .err-msg').remove();
+    return true;
+  }
+};
 
 
-  //   };
-
-  //   // Validate Zip Code
-  //   const zipRegex = /^\d{5}(?:[-\s]\d{4})?$/
-  //   let zipString = $('#zip').val();
-  //   if (zipRegex.test(zipString));{
-  //   if ($('#zip').val() ==/^\d{5}(?:[-\s]\d{4})?$/){
-
-
-  //   };
-  //   //Validate CVV
-  //   const cvvLength = /[0-9]{3}+/;
-  //   let cvvString = $('#cvv').val(); 
-  //   if (cvvLength.test(cvvString)); {
-  //   ($('.cvv').val() == ''|| '.cvv'> 3){ (/[0-9]{3}+/.test(value))
-
-}
-
+// Validate Zip Code
+function validateZip() {
+  const zipRegex = /^\d{5}(?:[-\s]\d{4})?$/
+  let zipString = $('#zip').val();
+  $('#zip + .err-msg').remove();
+  if (!zipRegex.test(zipString)) {
+    $('#zip').after('<span class="err-msg" style="color:red">Please enter a valid Zip Code!</span>');
+    return false;
+  } else {
+    $('#zip + .err-msg').remove();
+    return true;
+  };
+};
+//   //Validate CVV
+function validateCVV() {
+  const cvvRegex = /^[0-9]{3}$/
+  let cvvString = $('#cvv').val();
+  $('#cvv + .err-msg').remove();
+  //e.preventDefault();
+  if (!cvvRegex.test(cvvString)) {
+    $('#cvv').after('<span class="err-msg" style="color:red">Please enter a valid CVV!</span>');
+    return false;
+  } else {
+    $('#cvv + .err-msg').remove();
+    return true;
+  }
+};
 
 
 $('form').submit(function (e) {
+  
+  e.preventDefault();
+  // validateForm();
   if (!validateForm()) {
-    e.preventDefault()
-  } 
+    alert('Please Complete the Requiered Fields');
+  } else {
+    alert('Thank you for registering!')
+    location.reload(true);
+  }
 });
+
