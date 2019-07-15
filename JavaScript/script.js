@@ -53,6 +53,7 @@ $('.activities input').on("click", function (e) {
 });
 // Payment section, hides the option for select paymet option from the drop down menu.
 $('#payment option:first').hide();
+$('#payment').val('credit card');
 $('p:contains("PayPal")').hide();
 $('p:contains("Bitcoin")').hide();
 
@@ -81,9 +82,7 @@ function validateForm() {
   let formIsValid = validateName();
   formIsValid = validateEmail() && formIsValid;
   formIsValid = validateActivities() && formIsValid;
-  formIsValid = validateCreditCard() && formIsValid;
-  formIsValid = validateZip() && formIsValid;
-  formIsValid = validateCVV() && formIsValid;
+  formIsValid = validatePayment() && formIsValid;
   return formIsValid;
 }
 // To Validate Name Section
@@ -123,11 +122,22 @@ function validateActivities() {
     $('#total + .err-msg').remove();
     return true;
   }
-
+};
+// Validates the Payment where if a credit card, it will run the validateCreditCard function, if not just returns as true and moves foward with registration.
+function validatePayment() {
+  let isValid = true;
+  var paymentType = $("#payment").val(); 
+  $('#payment + .err-msg').remove();
+  if (paymentType === 'credit card') {
+    isValid = validateCreditCard() && isValid;
+    isValid = validateZip() && isValid;
+    isValid = validateCVV() && isValid;
+  } 
+  return isValid;
 };
 //   Validate credit card number
 function validateCreditCard() {  
-  const ccRegex =   /\b\d{4}(| |-)\d{4}\1\d{4}\1\d{4}\b/
+  const ccRegex = /\b\d{4}(| |-)\d{4}\1\d{4}\1\d{4}\b/
   let ccString = $('#cc-num').val();
   $('#cc-num + .err-msg').remove();
   if (!ccRegex.test(ccString)) {
@@ -137,7 +147,7 @@ function validateCreditCard() {
     $('#cc-num + .err-msg').remove();
     return true;
   }
-};
+};    
 // Validate Zip Code
 function validateZip() {
   const zipRegex = /^\d{5}(?:[-\s]\d{4})?$/
@@ -167,13 +177,7 @@ function validateCVV() {
 };
 //Code to submit the form and reloads it once all validators come back as true.
 $('form').submit(function (e) {
-  
-  e.preventDefault();
-  // validateForm();
   if (!validateForm()) {
-    alert('Please Complete the Requiered Fields');
-  } else {
-    alert('Thank you for registering!')
-    location.reload(true);
-  }
+    e.preventDefault();
+  } 
 });
